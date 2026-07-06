@@ -1,0 +1,178 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+
+
+
+
+@layer base {
+  :root {
+    --background: 140 20% 97%;
+    --foreground: 150 30% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 150 30% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 150 30% 10%;
+    --primary: 152 45% 28%;
+    --primary-foreground: 60 30% 96%;
+    --secondary: 42 45% 88%;
+    --secondary-foreground: 150 30% 15%;
+    --muted: 140 15% 93%;
+    --muted-foreground: 150 10% 45%;
+    --accent: 42 60% 50%;
+    --accent-foreground: 150 30% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 140 15% 88%;
+    --input: 140 15% 88%;
+    --ring: 152 45% 28%;
+    --radius: 0.75rem;
+    --font-display: 'Playfair Display', serif;
+    --font-body: 'DM Sans', sans-serif;
+    --glass-bg: 140 20% 99% / 0.7;
+    --glass-border: 140 20% 90% / 0.5;
+    --shadow-soft: 0 8px 32px hsl(150 30% 10% / 0.08);
+    --shadow-elevated: 0 16px 48px hsl(150 30% 10% / 0.12);
+    --gradient-hero: linear-gradient(135deg, hsl(152 45% 28%), hsl(160 40% 20%), hsl(140 35% 15%));
+    --gradient-gold: linear-gradient(135deg, hsl(42 60% 50%), hsl(38 65% 60%));
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 150 25% 6%;
+    --foreground: 140 15% 92%;
+    --card: 150 20% 10%;
+    --card-foreground: 140 15% 92%;
+    --popover: 150 20% 10%;
+    --popover-foreground: 140 15% 92%;
+    --primary: 152 50% 45%;
+    --primary-foreground: 150 30% 5%;
+    --secondary: 42 30% 20%;
+    --secondary-foreground: 42 45% 88%;
+    --muted: 150 15% 15%;
+    --muted-foreground: 140 10% 55%;
+    --accent: 42 55% 55%;
+    --accent-foreground: 150 30% 5%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 150 15% 18%;
+    --input: 150 15% 18%;
+    --ring: 152 50% 45%;
+    --glass-bg: 150 20% 8% / 0.7;
+    --glass-border: 150 15% 20% / 0.5;
+    --shadow-soft: 0 8px 32px hsl(0 0% 0% / 0.3);
+    --shadow-elevated: 0 16px 48px hsl(0 0% 0% / 0.4);
+    /* --gradient-hero: linear-gradient(135deg, hsl(150 25% 6%), hsl(155 30% 10%), hsl(148 20% 8%)); */
+--gradient-hero: linear-gradient(
+  140deg,
+  hsl(88, 85%, 92%) 0%,
+  hsl(105, 70%, 78%) 20%,
+  hsl(125, 60%, 58%) 45%,
+  hsl(140, 58%, 42%) 70%,
+  hsl(155, 55%, 30%) 100%
+);
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border)); /* Direct usage of custom var */
+  }
+
+  body {
+    background-color: hsl(var(--background)); /* Apply custom background */
+    color: hsl(var(--foreground)); /* Apply custom foreground */
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+}
+
+@layer components {
+  .glass {
+    background: hsl(var(--glass-bg));
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid hsl(var(--glass-border));
+  }
+
+  .glass-strong {
+    background: hsl(var(--glass-bg));
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid hsl(var(--glass-border));
+    box-shadow: var(--shadow-soft);
+  }
+
+  .gradient-hero {
+    background: var(--gradient-hero);
+  }
+
+  .gradient-gold {
+    background: var(--gradient-gold);
+  }
+
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+
+  .shadow-elevated {
+    box-shadow: var(--shadow-elevated);
+  }
+
+  .text-gradient-gold {
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+.nav-link {
+  position: relative; /* Ensure the pseudo-element is positioned correctly inside the <a> */
+}
+
+.nav-link::after {
+  content: ''; /* Required to create the pseudo-element */
+  position: absolute;
+  bottom: -4px; /* Distance of the underline from the text */
+  left: 0;
+  width: 0%; /* Start with 0 width to hide the underline */
+  height: 2px; /* Height of the underline */
+  background-color: hsl(var(--primary)); /* Use your primary color variable */
+  transition: width 0.3s ease; /* Smoothly expand the underline on hover */
+}
+
+/* On hover, expand the underline to 100% width */
+.nav-link:hover::after {
+  width: 100%; /* Underline expands fully on hover */
+}
+
+.hero-background {
+  background-image:
+    radial-gradient(circle at 50% 30%, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.25) 25%, transparent 55%),
+    radial-gradient(circle at 80% 70%, rgba(76,175,80,0.25) 0%, transparent 60%),
+    linear-gradient(140deg, hsl(90, 80%, 92%), hsl(140, 55%, 35%));
+
+  background-blend-mode: normal, soft-light, normal;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
