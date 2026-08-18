@@ -3,10 +3,26 @@ import { useRef } from "react";
 import { Leaf, FlaskConical, Droplets, HeartPulse } from "lucide-react";
 
 const steps = [
-  { icon: Leaf, title: "Harvest", desc: "Hand-picked herbs from organic farms at peak potency." },
-  { icon: FlaskConical, title: "Extract", desc: "Cold-pressed extraction preserves all vital nutrients." },
-  { icon: Droplets, title: "Purify", desc: "Triple-filtered for ultimate purity and consistency." },
-  { icon: HeartPulse, title: "Nourish", desc: "Enjoy daily for lasting health transformation." },
+  {
+    icon: Leaf,
+    title: "Harvest",
+    desc: "Hand-picked herbs from organic farms at peak potency.",
+  },
+  {
+    icon: FlaskConical,
+    title: "Extract",
+    desc: "Carefully extracted to preserve the herbs’ natural compounds and beneficial properties.",
+  },
+  {
+    icon: Droplets,
+    title: "Purify",
+    desc: "Triple-filtered for ultimate purity and consistency.",
+  },
+  {
+    icon: HeartPulse,
+    title: "Nourish",
+    desc: "Enjoy daily for lasting health transformation.",
+  },
 ];
 
 // ✅ Each step is its own component — hooks are always called at the top level
@@ -49,9 +65,9 @@ const HowItWorks = () => {
       <div className="container mx-auto px-6">
         <motion.div
           ref={titleRef}
-          initial={{ opacity: 0, y:8 }}
-          animate={titleInView ? { opacity: 1, y:0 } : {}}
-          transition={{ duration: 0.6}}
+          initial={{ opacity: 0, y: 8 }}
+          animate={titleInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">

@@ -226,7 +226,7 @@ const OrderSections = () => {
                   <motion.button
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
-                    onClick={handleCheckout}
+                    /* onClick={handleCheckout} */
                     className="/* bg-[hsl(var(--primary))] */ bg-red-500 px-8 py-3.5 rounded-xl text-[hsl(var(--primary-foreground))] font-semibold text-sm flex items-center gap-2 shadow-lg shadow-primary/20"
                   >
                     <ShoppingCart className="w-4 h-4" />{" "}

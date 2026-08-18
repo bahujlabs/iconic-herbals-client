@@ -3,23 +3,25 @@ import { devtools } from "zustand/middleware";
 
 export const useAuthStore = create(
   devtools(
-    (set, get) => ({
+    (set) => ({
       user: null,
       isRefreshing: false,
 
-      login: (user) =>
-        set({ user }, false, "auth/login"),
+      login: (user) => set({ user }, false, "auth/login"),
 
       setRefreshing: (isRefreshing) =>
         set({ isRefreshing }, false, "auth/setRefreshing"),
 
-      logout: () =>
-        set({ user: null }, false, "auth/logout"),
+      logout: () => set({ user: null }, false, "auth/logout"),
     }),
-    { name: "AuthStore" }
-  )
+    {
+      name: "AuthStore",
+    },
+  ),
 );
 
-export const selectUser            = (s) => s.user;
-export const selectIsAuthenticated = (s) => s.user !== null;
-export const selectIsRefreshing    = (s) => s.isRefreshing;
+export const selectUser = (state) => state.user;
+
+export const selectIsAuthenticated = (state) => state.user !== null;
+
+export const selectIsRefreshing = (state) => state.isRefreshing;

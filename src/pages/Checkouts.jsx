@@ -261,6 +261,9 @@ const Checkouts = () => {
       );
     }
   };
+
+
+
   const inputClass =
     "w-full px-4 py-3 rounded-xl bg-[hsl(var(--background))] border border-[hsl(var(--border))] " +
     "text-[hsl(var(--foreground))] text-sm placeholder:text-[hsl(var(--muted-foreground))] " +
