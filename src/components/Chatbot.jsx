@@ -1,14 +1,9 @@
 import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence, animate, delay } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, X, Send } from "lucide-react";
+import { chatApi } from "../api/aichatApi.js";
 
-const botResponses = [
-  "Thanks for reaching out! iconi mixture is made from 100% organic herbs, cold-pressed for maximum potency.",
-  "Our 25cl bottle is perfect for trying it out, and the 50cl offers the best value. Both ship free over $50!",
-  "Great question! We recommend taking 15ml daily, either in the morning or before bed for optimal results.",
-  "We ship worldwide! Orders typically arrive within 3-5 business days.",
-  "Yes, HerbaVita is completely natural with no artificial additives. It's safe for daily use.",
-];
+const CONVERSATION_ID_KEY = "iconic_chat_conversation_id";
 
 const Chatbot = () => {
   const [open, setOpen] = useState(true);
@@ -20,8 +15,14 @@ const Chatbot = () => {
   ]);
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
+  const [error, setError] = useState(null);
 
   const scrollRef = useRef(null);
+  const conversationIdRef = useRef(
+    typeof window !== "undefined"
+      ? localStorage.getItem(CONVERSATION_ID_KEY)
+      : null,
+  );
 
   useEffect(() => {
     scrollRef.current?.scrollTo({
@@ -30,25 +31,47 @@ const Chatbot = () => {
     });
   }, [messages, typing]);
 
-  const send = () => {
-    if (!input.trim()) return;
+  const send = async () => {
+    if (!input.trim() || typing) return;
     const userMsg = input.trim();
     setInput("");
+    setError(null);
     setMessages((m) => [...m, { role: "user", text: userMsg }]);
     setTyping(true);
 
-    setTimeout(() => {
-      setTyping(false);
+    try {
+      // ── Adjust this payload if ChatController expects a different shape ──
+      const data = await chatApi.ask({
+        message: userMsg,
+        conversationId: conversationIdRef.current || undefined,
+      });
 
+      // ── Adjust this destructuring if the response shape differs ──
+      const { reply, conversationId } = data;
+
+      if (conversationId) {
+        conversationIdRef.current = conversationId;
+        localStorage.setItem(CONVERSATION_ID_KEY, conversationId);
+      }
+
+      setMessages((m) => [...m, { role: "bot", text: reply }]);
+    } catch (err) {
+      setError(
+        err?.response?.data?.message ||
+          "Something went wrong. Please try again.",
+      );
       setMessages((m) => [
         ...m,
         {
           role: "bot",
-          text: botResponses[Math.floor(Math.random() * botResponses.length)],
+          text: "Sorry, I couldn't process that. Please try again in a moment.",
         },
       ]);
-    }, 1200);
+    } finally {
+      setTyping(false);
+    }
   };
+
   return (
     <>
       <AnimatePresence>
@@ -64,7 +87,10 @@ const Chatbot = () => {
                   We typically reply instantly
                 </p>
               </div>
-              <button onClick={() => setOpen(false)} className="p-1 hover:bg-muted rounded-lg transition-colors" >
+              <button
+                onClick={() => setOpen(false)}
+                className="p-1 hover:bg-muted rounded-lg transition-colors"
+              >
                 <X className="w-4 h-4 text-[hsl(var(--muted-foreground))]" />
               </button>
             </div>
@@ -76,7 +102,12 @@ const Chatbot = () => {
             >
               {messages.map((msg, i) => (
                 <motion.div
-                  className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+                  key={i}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className={`flex ${
+                    msg.role === "user" ? "justify-end" : "justify-start"
+                  }`}
                 >
                   <div
                     className={`max-w-[80%] px-4 py-2.5 rounded-2xl text-sm ${
@@ -115,18 +146,21 @@ const Chatbot = () => {
 
             {/* Input */}
             <div className="p-3 border-t border-[hsl(var(--border))]">
+              {error && <p className="text-xs text-red-500 mb-2">{error}</p>}
               <div className="flex gap-2">
                 <input
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && send()}
                   placeholder="Type a message"
-                  className="flex-1 px-4 py-2.5 rounded-xl bg-[hsl(var(--muted))] text-[hsl(var(--foreground))] text-sm placeholder:text-[hsl(var(--muted-foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--primary))]/30"
+                  disabled={typing}
+                  className="flex-1 px-4 py-2.5 rounded-xl bg-[hsl(var(--muted))] text-[hsl(var(--foreground))] text-sm placeholder:text-[hsl(var(--muted-foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--primary))]/30 disabled:opacity-60"
                 />
                 <motion.button
                   whileTap={{ scale: 0.9 }}
                   onClick={send}
-                  className="w-10 h-10 bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] flex items-center justify-center"
+                  disabled={typing || !input.trim()}
+                  className="w-10 h-10 rounded-xl bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] flex items-center justify-center disabled:opacity-60"
                 >
                   <Send className="w-4 h-4" />
                 </motion.button>
